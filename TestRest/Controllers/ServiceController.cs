@@ -30,7 +30,7 @@ namespace Server.Controllers
 
 		public ActionResult Get()
 		{
-			var model = _session.Query<Person>().Select(x => new PersonModel(x)).ToList();
+			var model = _session.Query<Person>().Select(x => new PersonModel(x)).ToList(); 
 
 			return Ok(model);
 		}
@@ -48,7 +48,7 @@ namespace Server.Controllers
 
 				model.Save(_session);
 
-				return Ok("Данные успешно сохранились !");
+				return Ok("Данные успешно сохранились !{сохранено}");
 			}
 
 			return BadRequest(ModelState.Values.Select(x => x.Errors.Select(x => x.Exception)));

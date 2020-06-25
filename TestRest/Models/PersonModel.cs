@@ -41,15 +41,19 @@ namespace Server.Models
         public List<KeyValuePair<string, string>> Validate(ISession session)
         {
             var errors = new List<KeyValuePair<string, string>>();
+            var person = session.Query<Person>().FirstOrDefault(x=>x.Iin == Iin);
+
+            if (person != null)
+                errors.Add(new KeyValuePair<string, string>("Person", "Данный пользователь уже существует.{дубликат}"));
 
             if (Iin.Length != 12)
-                errors.Add(new KeyValuePair<string, string>("Iin","Не верная длинна ИИН."));
+                errors.Add(new KeyValuePair<string, string>("Iin", "Не верная длинна ИИН.{ошибка}"));
 
             if (string.IsNullOrEmpty(LastName) || string.IsNullOrEmpty(FirstName))
-                errors.Add(new KeyValuePair<string, string>("Name", "Необходимо ввести фамилию и имя."));
+                errors.Add(new KeyValuePair<string, string>("Name", "Необходимо ввести фамилию и имя.{ошибка}"));
 
             if (Birthday.Date > DateTime.Now.Date)
-                errors.Add(new KeyValuePair<string, string>("Birthday", "День рождения не может быть в будущем."));
+                errors.Add(new KeyValuePair<string, string>("Birthday", "День рождения не может быть в будущем.{ошибка}"));
 
             return errors;
         }

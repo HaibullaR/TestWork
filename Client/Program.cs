@@ -38,24 +38,30 @@ namespace Client
                     LastName = "Макаров",
                     MiddleName = "Ильясович"
                 };
-                var json = JsonConvert.SerializeObject(person);
+                var random = new Random();
                 for (int i = 0; i < 10; i++)
                 {
+                    string iin = "";
+                    var json = JsonConvert.SerializeObject(person);
                     var response = await client.PostAsync(createURL, new StringContent(json, Encoding.UTF8, "application/json"));
                     var responseBody = await response.Content.ReadAsStringAsync();
                     Console.WriteLine($"Create person response: {responseBody}");
 
+                    for (int j = 0; j < 12; j++)
+                        iin += random.Next(1, 9).ToString();
+                    person.Iin = iin;
 
-                    if (i == 4)
+                    if (i == 2)
+                    {
+                        person.Iin = "123456789102";
+                    }
+                    else if (i == 4)
                     {
                         person.FirstName = null;
-                        json = JsonConvert.SerializeObject(person);
                     }
                     else if (i == 7)
                     {
                         person.FirstName = "Андрей";
-                        person.Iin = "123456";
-                        json = JsonConvert.SerializeObject(person);
                     }
                 }
 
