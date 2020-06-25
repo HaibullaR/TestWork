@@ -25,7 +25,6 @@ namespace Server.Models
         public PersonCreateModel() { }
         public PersonCreateModel(Person entity)
         {
-            Id = entity.Id;
             Iin = entity.Iin;
             LastName = entity.LastName;
             FirstName = entity.FirstName;
@@ -33,7 +32,6 @@ namespace Server.Models
             Birthday = entity.Birthday;
         }
 
-        public long Id { get; set; }
         public string Iin { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
@@ -43,6 +41,15 @@ namespace Server.Models
         public List<KeyValuePair<string, string>> Validate(ISession session)
         {
             var errors = new List<KeyValuePair<string, string>>();
+
+            if (Iin.Length != 12)
+                errors.Add(new KeyValuePair<string, string>("Iin","Не верная длинна ИИН."));
+
+            if (string.IsNullOrEmpty(LastName) || string.IsNullOrEmpty(FirstName))
+                errors.Add(new KeyValuePair<string, string>("Name", "Необходимо ввести фамилию и имя."));
+
+            if (Birthday.Date > DateTime.Now.Date)
+                errors.Add(new KeyValuePair<string, string>("Birthday", "День рождения не может быть в будущем."));
 
             return errors;
         }

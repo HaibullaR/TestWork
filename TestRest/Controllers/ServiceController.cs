@@ -48,7 +48,7 @@ namespace Server.Controllers
 
 				model.Save(_session);
 
-				return Ok();
+				return Ok("Данные успешно сохранились !");
 			}
 
 			return BadRequest(ModelState.Values.Select(x => x.Errors.Select(x => x.Exception)));
